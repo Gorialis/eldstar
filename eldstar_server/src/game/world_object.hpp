@@ -19,7 +19,7 @@ class world_object {
                                     glm::vec3(x, y, z)
                                 ),
                                 glm::radians(y_rotation),
-                                glm::vec3(1.0f, 0.0f, 0.0f)
+                                glm::vec3(0.0f, 1.0f, 0.0f)
                             ),
                             glm::radians(x_rotation),
                             glm::vec3(1.0f, 0.0f, 0.0f)

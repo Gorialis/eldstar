@@ -44,5 +44,4 @@ deploy:
     secure: 6reEPHynRI/ph1IUxA0h8oQPzc3YIEKUSjHqMYcR9Ts+5/3pOPw8SOT7sEvwDlV3
   artifact: /Eldstar_.*_Win(32|64)\.zip/
   on:
-    branch: master
     APPVEYOR_REPO_TAG: true
