@@ -16,33 +16,33 @@ build_script:
   - "cd eldstar_server"
   - ps: ".\\build.ps1"
   - "cd .."
-  - ps: "Compress-Archive -Path \"eldstar_server/dists/*\" -DestinationPath \"Eldstar_WinDebug.zip\""
-  - "mkdir -p dists/32bit"
+  - ps: "Compress-Archive -Path \"eldstar_server/dists/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_WinDebug.zip\""
+  - "mkdir dists/32bit"
   - "cd dists/32bit"
   - ps: "Copy-Item ../../eldstar_client ./client -Recurse"
   - ps: "Copy-Item '../../eldstar_server/dists/Release - Visual Studio 15 2017/Release' ./server -Recurse"
   - ps: "Copy-Item ../../README.md ./README.md"
   - "cd ../.."
-  - "mkdir -p dists/64bit"
+  - "mkdir dists/64bit"
   - "cd dists/64bit"
   - ps: "Copy-Item ../../eldstar_client ./client -Recurse"
   - ps: "Copy-Item '../../eldstar_server/dists/Release - Visual Studio 15 2017 Win64/Release' ./server -Recurse"
   - ps: "Copy-Item ../../README.md ./README.md"
   - "cd ../.."
-  - ps: "Compress-Archive -Path \"dists/32bit/*\" -DestinationPath \"Eldstar_Win32.zip\""
-  - ps: "Compress-Archive -Path \"dists/64bit/*\" -DestinationPath \"Eldstar_Win64.zip\""
+  - ps: "Compress-Archive -Path \"dists/32bit/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_Win32.zip\""
+  - ps: "Compress-Archive -Path \"dists/64bit/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_Win64.zip\""
 
 artifacts:
-  - path: Eldstar_Win32.zip
-  - path: Eldstar_Win64.zip
-  - path: Eldstar_WinDebug.zip
+  - path: Eldstar_*_Win32.zip
+  - path: Eldstar_*_Win64.zip
+  - path: Eldstar_*_WinDebug.zip
 
 deploy:
   description: Build artifacts from AppVeyor CI
   provider: GitHub
   auth_token:
     secure: 6reEPHynRI/ph1IUxA0h8oQPzc3YIEKUSjHqMYcR9Ts+5/3pOPw8SOT7sEvwDlV3
-  artifact: Eldstar_Win32.zip,Eldstar_Win64.zip
+  artifact: /Eldstar_.*_Win(32|64)\.zip/
   on:
     branch: master
     APPVEYOR_REPO_TAG: true
