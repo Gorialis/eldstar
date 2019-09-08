@@ -1,0 +1,14 @@
+
+eldstar_server/dists/
+eldstar_server/deps/
+
+eldstar_server/.vs/
+
+dists/
+
+Eldstar_*_Win32.zip
+Eldstar_*_Win64.zip
+Eldstar_*_WinDebug.zip
+
+.vscode/
+.code/

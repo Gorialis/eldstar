@@ -1,0 +1,31 @@
+
+stages:
+  - build
+
+build eldstar_server:
+  stage: build
+  image: archlinux/base
+  before_script:
+    - pacman -Syu --noconfirm
+    # Build tools
+    - pacman -S --noconfirm gcc cmake make
+    # Project configuration dependencies
+    - pacman -S --noconfirm git pkgconf
+    # Project library dependencies
+    - pacman -S --noconfirm mesa glfw-x11 glm freetype2 libpng
+    # Test dependencies
+    - pacman -S --noconfirm gawk xorg-server-xvfb
+    # Update library database
+    - ldconfig
+  script:
+    - mkdir -p eldstar_server/dists/archlinux
+    - cd eldstar_server/dists/archlinux
+    - cmake ../..
+    - make
+    - dir eldstar_server
+    - xvfb-run --server-args='-screen 0 1920x1080x24' ./eldstar_server dryrun
+    - cd ../../..
+  artifacts:
+    paths:
+      - eldstar_server/dists
+    expire_in: 3 months

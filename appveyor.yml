@@ -1,0 +1,37 @@
+build: off
+
+environment:
+  matrix:
+    - ARCH: amd64
+
+install:
+  - "cd eldstar_server"
+  - ".\download_deps.ps1"
+  - ".\build_deps.ps1"
+  - "cd .."
+
+build_script:
+  - "Set-Variable -Name GIT_REV_COUNT -Value $(git rev-list --count HEAD)"
+  - "cd eldstar_server"
+  - ".\build.ps1"
+  - "cd .."
+  - "Compress-Archive -Path 'eldstar_server/dists/*' -DestinationPath Eldstar_1.0.${GIT_REV_COUNT}_WinDebug.zip"
+  - "mkdir -p dists/32bit"
+  - "cd dists/32bit"
+  - "Copy-Item ../../eldstar_client ./client -Recurse"
+  - "Copy-Item '../../eldstar_server/dists/Release - Visual Studio 15 2017/Release' ./server -Recurse"
+  - "Copy-Item ../../README.md ./README.md"
+  - "cd ../.."
+  - "mkdir -p dists/64bit"
+  - "cd dists/64bit"
+  - "Copy-Item ../../eldstar_client ./client -Recurse"
+  - "Copy-Item '../../eldstar_server/dists/Release - Visual Studio 15 2017 Win64/Release' ./server -Recurse"
+  - "Copy-Item ../../README.md ./README.md"
+  - "cd ../.."
+  - "Compress-Archive -Path 'dists/32bit/*' -DestinationPath Eldstar_1.0.${GIT_REV_COUNT}_Win32.zip"
+  - "Compress-Archive -Path 'dists/64bit/*' -DestinationPath Eldstar_1.0.${GIT_REV_COUNT}_Win64.zip"
+
+artifacts:
+  - path: Eldstar_*_Win32.zip
+  - path: Eldstar_*_Win64.zip
+  - path: Eldstar_*_WinDebug.zip
