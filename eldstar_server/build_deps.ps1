@@ -16,8 +16,12 @@ ForEach ($COMPILER In $COMPILERS) {
 Set-Variable -Name TARGET -Value "${CONFIG} - ${COMPILER}";
 Set-Variable -Name TARGET_DIR -Value "${PROJECT_DIR}/deps/${TARGET}";
 
+Write-Host "Building for ${TARGET}...";
+
 mkdir $TARGET;
 Set-Location $TARGET;
+
+Write-Host "[${TARGET}] Building zlib...";
 
 mkdir zlib;
 Set-Location zlib;
@@ -25,11 +29,15 @@ cmake ../../sources/zlib/zlib-1.2.11 -G ${COMPILER} -DCMAKE_INSTALL_PREFIX:PATH=
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
+Write-Host "[${TARGET}] Building libpng...";
+
 mkdir libpng;
 Set-Location libpng;
 cmake ../../sources/libpng/lpng1637 -G ${COMPILER} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/libpng/out" -DZLIB_INCLUDE_DIR:PATH="${TARGET_DIR}/zlib/out/include" -DZLIB_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstaticd.lib" -DZLIB_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstatic.lib";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
+
+Write-Host "[${TARGET}] Building glfw...";
 
 mkdir glfw;
 Set-Location glfw;
@@ -37,11 +45,15 @@ cmake ../../sources/glfw/glfw-3.3 -G ${COMPILER} -DCMAKE_INSTALL_PREFIX:PATH="${
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
+Write-Host "[${TARGET}] Building glm...";
+
 mkdir glm;
 Set-Location glm;
 cmake ../../sources/glm/glm -G ${COMPILER} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glm/out";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
+
+Write-Host "[${TARGET}] Building harfbuzz...";
 
 mkdir harfbuzz;
 Set-Location harfbuzz;
@@ -56,6 +68,8 @@ cmake ../../sources/harfbuzz/harfbuzz-2.6.1 -G ${COMPILER} -DCMAKE_INSTALL_PREFI
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
+Write-Host "[${TARGET}] Building freetype...";
+
 mkdir freetype;
 Set-Location freetype;
 cmake ../../sources/freetype/freetype-2.10.1 -G ${COMPILER} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/freetype/out" -DFT_WITH_HARFBUZZ:BOOL="1" -DHARFBUZZ_INCLUDE_DIRS:PATH="${TARGET_DIR}/harfbuzz/out/include/harfbuzz" -DHARFBUZZ_LIBRARIES:FILEPATH="${TARGET_DIR}/harfbuzz/out/lib/harfbuzz.lib" -DFT_WITH_ZLIB:BOOL="1" -DZLIB_INCLUDE_DIR:PATH="${TARGET_DIR}/zlib/out/include" -DZLIB_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstaticd.lib" -DZLIB_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstatic.lib" -DFT_WITH_PNG:BOOL="1" -DPNG_PNG_INCLUDE_DIR:PATH="${TARGET_DIR}/libpng/out/include" -DPNG_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_staticd.lib" -DPNG_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_static.lib";
@@ -63,6 +77,8 @@ cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
 Set-Location ..;
+
+Write-Host "Done building for ${TARGET}.";
 
 }
 }
