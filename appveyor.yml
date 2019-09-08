@@ -1,5 +1,7 @@
 build: off
 
+image: Visual Studio 2017
+
 environment:
   matrix:
     - ARCH: amd64
