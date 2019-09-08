@@ -6,14 +6,14 @@ environment:
 
 install:
   - "cd eldstar_server"
-  - ".\download_deps.ps1"
-  - ".\build_deps.ps1"
+  - ".\\download_deps.ps1"
+  - ".\\build_deps.ps1"
   - "cd .."
 
 build_script:
   - "Set-Variable -Name GIT_REV_COUNT -Value $(git rev-list --count HEAD)"
   - "cd eldstar_server"
-  - ".\build.ps1"
+  - ".\\build.ps1"
   - "cd .."
   - "Compress-Archive -Path 'eldstar_server/dists/*' -DestinationPath Eldstar_1.0.${GIT_REV_COUNT}_WinDebug.zip"
   - "mkdir -p dists/32bit"
