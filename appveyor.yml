@@ -42,9 +42,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: 6reEPHynRI/ph1IUxA0h8oQPzc3YIEKUSjHqMYcR9Ts+5/3pOPw8SOT7sEvwDlV3
-  artifact:
-    - Eldstar_Win32.zip
-    - Eldstar_Win64.zip
+  artifact: Eldstar_Win32.zip,Eldstar_Win64.zip
   on:
     branch: master
     APPVEYOR_REPO_TAG: true
