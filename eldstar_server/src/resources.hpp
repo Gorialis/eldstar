@@ -16,12 +16,12 @@ class resource_manager {
             opensans(&freetype, loaders::file("resources/fonts/OpenSans.ttf"), 20),
 
             text({
-                loaders::shader(GL_VERTEX_SHADER, loaders::file("resources/shaders/text.vs")),
-                loaders::shader(GL_FRAGMENT_SHADER, loaders::file("resources/shaders/text.fs"))
+                loaders::shader(GL_VERTEX_SHADER, loaders::file("resources/shaders/text_vs.glsl")),
+                loaders::shader(GL_FRAGMENT_SHADER, loaders::file("resources/shaders/text_fs.glsl"))
             }),
             mesh({
-                loaders::shader(GL_VERTEX_SHADER, loaders::file("resources/shaders/mesh.vs")),
-                loaders::shader(GL_FRAGMENT_SHADER, loaders::file("resources/shaders/mesh.fs"))
+                loaders::shader(GL_VERTEX_SHADER, loaders::file("resources/shaders/mesh_vs.glsl")),
+                loaders::shader(GL_FRAGMENT_SHADER, loaders::file("resources/shaders/mesh_fs.glsl"))
             }),
 
             camera(loaders::file("resources/models/camera.stl")),
