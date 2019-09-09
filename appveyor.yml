@@ -16,7 +16,7 @@ build_script:
   - "cd eldstar_server"
   - ps: ".\\build.ps1"
   - "cd .."
-  - ps: "Compress-Archive -Path \"eldstar_server/dists/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_WinDebug.zip\""
+  - ps: "Compress-Archive -Path \"eldstar_server/dists/*\" -DestinationPath \"Eldstar_${env:APPVEYOR_REPO_TAG_NAME}_WinDebug.zip\""
   - "mkdir dists\\32bit"
   - "cd dists/32bit"
   - ps: "Copy-Item ../../eldstar_client ./client -Recurse"
@@ -29,8 +29,8 @@ build_script:
   - ps: "Copy-Item '../../eldstar_server/dists/Release - Visual Studio 15 2017 Win64/Release' ./server -Recurse"
   - ps: "Copy-Item ../../README.md ./README.md"
   - "cd ../.."
-  - ps: "Compress-Archive -Path \"dists/32bit/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_Win32.zip\""
-  - ps: "Compress-Archive -Path \"dists/64bit/*\" -DestinationPath \"Eldstar_1.0.$(git rev-list --count HEAD)_Win64.zip\""
+  - ps: "Compress-Archive -Path \"dists/32bit/*\" -DestinationPath \"Eldstar_${env:APPVEYOR_REPO_TAG_NAME}_Win32.zip\""
+  - ps: "Compress-Archive -Path \"dists/64bit/*\" -DestinationPath \"Eldstar_${env:APPVEYOR_REPO_TAG_NAME}_Win64.zip\""
 
 artifacts:
   - path: Eldstar_*_Win32.zip
