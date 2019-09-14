@@ -120,11 +120,7 @@ void display_control(eldstar::window& w) {
 }
 
 bool menu_control(eldstar::window& w, resource_manager& r, gl::perspective_camera& c, GLint color_id) {
-    float top = static_cast<float>(w.gl_window.get_height()) - static_cast<float>(r.opensans.size) - 20.0f;
-
     if (!w.active_menu) {
-        r.opensans.render_utf8_bordered("Press [M] to open the menu", glm::vec2(20.0f, top));
-
         if (w.input_state->keyboard[GLFW_KEY_M].action == input::down) {
             w.active_menu.reset(new menu(
                 std::string("Eldstar Menu"),
@@ -167,8 +163,6 @@ bool menu_control(eldstar::window& w, resource_manager& r, gl::perspective_camer
             return false;
         }
     } else {
-        w.active_menu->render(20.0f, top, r, color_id);
-
         menu* menu_head = w.active_menu->get_head();
 
         if (w.input_state->keyboard[GLFW_KEY_DOWN].action == input::down)

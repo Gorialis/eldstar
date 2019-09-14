@@ -77,6 +77,15 @@ int main(int argc, char** argv) {
             glClearColor(0.05f, 0.1f, 0.1f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Handle input
+        if (!eldstar::controls::menu_control(*window, *resources, camera, color))
+            eldstar::controls::orbiting_camera_control(*window, camera);
+        eldstar::controls::display_control(*window);
+
+        // Track target if set
+        if (world)
+            camera_track_target(camera, *world, window->track_target);
+
         // Enable the mesh shader
         resources->mesh.use();
 
@@ -183,13 +192,12 @@ int main(int argc, char** argv) {
         resources->text.set(color, glm::vec3(1.0f, 1.0f, 1.0f));
         window->status -= window->delta_time;
 
-        // Handle input
-        if (!eldstar::controls::menu_control(*window, *resources, camera, color))
-            eldstar::controls::orbiting_camera_control(*window, camera);
-        eldstar::controls::display_control(*window);
+        float window_top = static_cast<float>(window->gl_window.get_height()) - static_cast<float>(resources->opensans.size) - 20.0f;
 
-        if (world)
-            camera_track_target(camera, *world, window->track_target);
+        if (window->active_menu)
+            window->active_menu->render(20.0f, window_top, *resources, color);
+        else
+            resources->opensans.render_utf8_bordered("Press [M] to open the menu", glm::vec2(20.0f, window_top));
 
         // If this was a dry run, exit successfully.
         if (dry_run) {
