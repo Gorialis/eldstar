@@ -13,6 +13,7 @@ struct menu_option {
     std::string name;
     std::function<void(void*)> callback;
 
+    menu_option() : name("<unset>"), callback([](void* p){}) {};
     menu_option(std::string name, std::function<void(void*)> callback) : name(name), callback(callback) {};
     void operator()(void* ptr) { callback(ptr); };
 };

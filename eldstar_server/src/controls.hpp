@@ -153,10 +153,68 @@ bool menu_control(eldstar::window& w, resource_manager& r, gl::perspective_camer
                             }
                         );
                     }),
+                    menu_option("Tracking", [&w](void* ptr){
+                        menu* m = reinterpret_cast<menu*>(ptr);
+                        m->set_submenu(
+                            "Track",
+                            {
+                                menu_option("Nothing", [&w](void* ptr) {
+                                    w.track_target = {track_none, 0};
+                                    w.status("Tracking disabled, camera is now free");
+                                }),
+                                menu_option("Mario", [&w](void* ptr) {
+                                    w.track_target = {track_mario, 0};
+                                    w.status("Now tracking Mario's position");
+                                }),
+                                menu_option("Game camera", [&w](void* ptr) {
+                                    w.track_target = {track_game_camera, 0};
+                                    w.status("Now tracking game camera position");
+                                }),
+                                menu_option("Dynamic object", [&w](void* ptr) {
+                                    menu* m = reinterpret_cast<menu*>(ptr);
+                                    std::vector<menu_option> options(65);
+
+                                    for (long i = 0; i < 65; i++)
+                                        options[i] = menu_option(std::to_string(i), [&w, i](void* ptr) {
+                                            w.track_target = {track_dynamic_object, i};
+                                            w.status("Now tracking dynamic object " + std::to_string(i));
+                                        });
+
+                                    m->set_submenu("Which ID?", options);
+                                }),
+                                menu_option("Item object", [&w](void* ptr) {
+                                    menu* m = reinterpret_cast<menu*>(ptr);
+                                    std::vector<menu_option> options(65);
+
+                                    for (long i = 0; i < 65; i++)
+                                        options[i] = menu_option(std::to_string(i), [&w, i](void* ptr) {
+                                            w.track_target = {track_item_object, i};
+                                            w.status("Now tracking item object " + std::to_string(i));
+                                        });
+
+                                    m->set_submenu("Which ID?", options);
+                                }),
+                                menu_option("World object", [&w](void* ptr) {
+                                    menu* m = reinterpret_cast<menu*>(ptr);
+                                    std::vector<menu_option> options(32);
+
+                                    for (long i = 0; i < 32; i++)
+                                        options[i] = menu_option(std::to_string(i), [&w, i](void* ptr) {
+                                            w.track_target = {track_world_object, i};
+                                            w.status("Now tracking world object " + std::to_string(i));
+                                        });
+
+                                    m->set_submenu("Which ID?", options);
+                                }),
+                            }
+                        );
+                    }),
                     menu_option("Exit", [&w](void* ptr) { w.close(); }),
                 },
                 [&w]() { w.active_menu.reset(); }
             ));
+
+            w.status("Press [Backspace] to close the menu");
 
             return true;
         } else {

@@ -45,7 +45,7 @@ void camera_track_target(gl::perspective_camera& camera, game::world& world, con
             matrix = world.item_objects[target.id].matrix;
             break;
         case track_world_object:
-            matrix = world.item_objects[target.id].matrix;
+            matrix = world.world_objects[target.id].matrix;
             break;
         default: return;  // Unknown tracking type?
     }
