@@ -11,6 +11,7 @@ namespace eldstar {
 enum tracking_type {
     track_none,
     track_mario,
+    track_game_camera,
     track_dynamic_object,
     track_item_object,
     track_world_object
@@ -33,6 +34,9 @@ void camera_track_target(gl::perspective_camera& camera, game::world& world, con
     switch (target.type) {
         case track_mario:
             matrix = world.mario.matrix;
+            break;
+        case track_game_camera:
+            matrix = glm::inverse(world.get_camera_view_matrix());
             break;
         case track_dynamic_object:
             matrix = world.dynamic_objects[target.id].matrix;
