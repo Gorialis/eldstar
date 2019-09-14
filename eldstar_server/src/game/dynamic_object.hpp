@@ -7,7 +7,7 @@ namespace game {
 
 class dynamic_object {
     public:
-        dynamic_object() : matrix(1.0f) {};
+        dynamic_object() : matrix(0.0f) {};
         dynamic_object(float x, float y, float z, float rotation)
             : matrix(
                 glm::scale(

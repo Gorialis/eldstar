@@ -7,7 +7,7 @@ namespace game {
 
 class world_object {
     public:
-        world_object() : matrix(1.0f) {};
+        world_object() : matrix(0.0f) {};
         world_object(float x, float y, float z, float x_rotation, float y_rotation, float z_rotation, float width, float height, float depth)
             : matrix(
                 glm::scale(

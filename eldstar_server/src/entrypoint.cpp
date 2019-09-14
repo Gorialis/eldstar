@@ -7,6 +7,7 @@
 #include "resources.hpp"
 #include "window.hpp"
 #include "controls.hpp"
+#include "tracking.hpp"
 #include "game/world.hpp"
 #include "gl/camera.hpp"
 #include "gl/dump.hpp"
@@ -186,6 +187,9 @@ int main(int argc, char** argv) {
         if (!eldstar::controls::menu_control(*window, *resources, camera, color))
             eldstar::controls::orbiting_camera_control(*window, camera);
         eldstar::controls::display_control(*window);
+
+        if (world)
+            camera_track_target(camera, *world, window->track_target);
 
         // If this was a dry run, exit successfully.
         if (dry_run) {

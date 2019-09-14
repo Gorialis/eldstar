@@ -7,7 +7,7 @@ namespace game {
 
 class item_object {
     public:
-        item_object() : matrix(1.0f) {};
+        item_object() : matrix(0.0f) {};
         item_object(float x, float y, float z)
             : matrix(
                 glm::scale(

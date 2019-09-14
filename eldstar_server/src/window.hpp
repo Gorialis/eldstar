@@ -4,6 +4,7 @@
 #include "gl/glfw.hpp"
 #include "input.hpp"
 #include "menu.hpp"
+#include "tracking.hpp"
 
 #ifndef GIT_REV_COUNT
 #define GIT_REV_COUNT 0
@@ -107,6 +108,8 @@ class window {
 
         std::unique_ptr<menu> active_menu;
         status_bar status;
+
+        tracking_target track_target;
 
         double delta_time;
 
