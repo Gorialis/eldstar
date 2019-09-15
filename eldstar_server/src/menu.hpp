@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <memory>
 #include <string>
@@ -35,10 +36,11 @@ struct status_bar {
 
 struct menu {
     menu(std::string title, std::vector<menu_option> options = {}, std::function<void()> back = []() {})
-        : title(title), options(options), back(back), index(0), submenu(nullptr) {};
+        : title(title), options(options), back(back), index(0), view_index(0), submenu(nullptr) {};
 
     std::string title;
     int index;
+    int view_index;
 
     std::vector<menu_option> options;
     std::function<void()> back;
@@ -57,6 +59,9 @@ struct menu {
         index++;
         if (index >= max) index = 0;
 
+        if (view_index >= index) view_index = std::max(index - 1, 0);
+        if (index - 8 > view_index) view_index = index - 8;
+
         return *this;
     }
 
@@ -70,6 +75,9 @@ struct menu {
 
         index--;
         if (index < 0) index = static_cast<int>(max) - 1;
+
+        if (view_index >= index) view_index = std::max(index - 1, 0);
+        if (index - 8 > view_index) view_index = index - 8;
 
         return *this;
     }
@@ -124,8 +132,26 @@ struct menu {
         right = fmaxf(right, r.opensans.render_utf8_bordered(title, glm::vec2(x, needle)).x);
         needle -= line_spacing;
 
+        // Calculate menu bounds
+        size_t start = static_cast<size_t>(view_index);
+        size_t end = start + 10;
+        size_t max = static_cast<size_t>(options.size());
+        float top_needle = needle;
+
+        bool skip_first, skip_last;
+
+        if (skip_first = start > 0) {
+            needle -= line_spacing;
+            start++;
+        }
+
+        if (skip_last = max > end) {
+            end--;
+        }
+
+
         // Draw options
-        for (size_t i = 0; i < options.size(); i++) {
+        for (size_t i = start; i < std::min(end, max); i++) {
             if (i == index)
                 r.text.set(color_id, selected);
             else
@@ -134,6 +160,15 @@ struct menu {
             right = fmaxf(right, r.opensans.render_utf8_bordered(options[i].name, glm::vec2(x, needle)).x);
             needle -= line_spacing;
         }
+
+        // Draw menu extensions if present
+        float center = ((x + right) / 2.0f) - (line_spacing * 0.4f);
+
+        r.text.set(color_id, top);
+        if (skip_first)
+            r.opensans.render_utf8_bordered(u8"\u2bc5", glm::vec2(center, top_needle));
+        if (skip_last)
+            r.opensans.render_utf8_bordered(u8"\u2bc6", glm::vec2(center, needle));
 
         // Draw submenu if present
         if (submenu)
