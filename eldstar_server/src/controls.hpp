@@ -110,7 +110,7 @@ void display_control(eldstar::window& w) {
 
     if (w.input_state->keyboard[GLFW_KEY_TAB].action == input::down) {
         w.follow_game_camera = !w.follow_game_camera;
-        w.status(w.follow_game_camera ? "Game camera tracking enabled." : "Tracking disabled, returning to free camera.");
+        w.status(w.follow_game_camera ? "Following game camera" : "Follow disabled, returning to free camera.");
     }
 
     if (w.input_state->keyboard[GLFW_KEY_C].action == input::down) {
