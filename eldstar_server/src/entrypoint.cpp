@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
         resources->mesh.use();
 
         // Set up the camera and default modes
-        if (window->follow_game_camera && world) {
+        if (window->mirror_game_camera && world) {
             glm::mat4 view = world->get_camera_view_matrix();
             glm::mat4 inverse_view = glm::inverse(view);
 
