@@ -209,6 +209,22 @@ bool menu_control(eldstar::window& w, resource_manager& r, gl::perspective_camer
                             }
                         );
                     }),
+                    menu_option("Framedump", [&w](void* ptr){
+                        menu* m = reinterpret_cast<menu*>(ptr);
+                        m->set_submenu(
+                            "Framedump settings",
+                            {
+                                menu_option("Record with UI", [&w](void* ptr) {
+                                    w.recording_has_ui = true;
+                                    w.status("Framedumps will now include UI");
+                                }),
+                                menu_option("Record without UI", [&w](void* ptr) {
+                                    w.recording_has_ui = false;
+                                    w.status("Framedumps will now NOT include UI");
+                                }),
+                            }
+                        );
+                    }),
                     menu_option("Exit", [&w](void* ptr) { w.close(); }),
                 },
                 [&w]() { w.active_menu.reset(); }

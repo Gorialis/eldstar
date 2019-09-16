@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
                 world->render(*resources, window->color_mode, model_color, model_matrix, color_mode);
             }
 
-            if (swapped && window->recording)
+            if (swapped && window->recording && !window->recording_has_ui)
                 eldstar::gl::dump_png("framedump/" + std::to_string(world->frame) + ".png", window->gl_window);
 
         } else {
@@ -198,6 +198,9 @@ int main(int argc, char** argv) {
             window->active_menu->render(20.0f, window_top, *resources, color);
         else
             resources->opensans.render_utf8_bordered("Press [M] to open the menu", glm::vec2(20.0f, window_top));
+
+        if (world && swapped && window->recording && window->recording_has_ui)
+            eldstar::gl::dump_png("framedump/" + std::to_string(world->frame) + ".png", window->gl_window);
 
         // If this was a dry run, exit successfully.
         if (dry_run) {

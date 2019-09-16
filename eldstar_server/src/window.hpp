@@ -26,7 +26,11 @@ class window {
      */
 
     public:
-        window() : gl_window(1184, 800, "Eldstar", true), start_time(glfwGetTime()), last_time(start_time), wireframe(false), mirror_game_camera(false), recording(false), color_mode(0) {
+        window()
+            : gl_window(1184, 800, "Eldstar", true),
+              start_time(glfwGetTime()), last_time(start_time),
+              wireframe(false), mirror_game_camera(false), recording(false), recording_has_ui(false), color_mode(0)
+        {
             // Enable depth-testing and set the blend function
             glEnable(GL_DEPTH_TEST);
             glEnable(GL_BLEND);
@@ -104,6 +108,7 @@ class window {
         bool wireframe;
         bool mirror_game_camera;
         bool recording;
+        bool recording_has_ui;
         int color_mode;
 
         std::unique_ptr<menu> active_menu;
