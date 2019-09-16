@@ -17,6 +17,7 @@ build_script:
   - ps: ".\\build.ps1"
   - "cd .."
   - ps: "Compress-Archive -Path \"eldstar_server/dists/*\" -DestinationPath \"Eldstar_${env:APPVEYOR_REPO_TAG_NAME}_WinDebug.zip\""
+  - ps: "Compress-Archive -Path \"eldstar_server/deps/*\" -DestinationPath \"Eldstar_${env:APPVEYOR_REPO_TAG_NAME}_WinDepends.zip\""
   - "mkdir dists\\32bit"
   - "cd dists/32bit"
   - ps: "Copy-Item ../../eldstar_client ./client -Recurse"
@@ -36,6 +37,7 @@ artifacts:
   - path: Eldstar_*_Win32.zip
   - path: Eldstar_*_Win64.zip
   - path: Eldstar_*_WinDebug.zip
+  - path: Eldstar_*_WinDepends.zip
 
 deploy:
   description: |
