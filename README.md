@@ -4,6 +4,8 @@
 
 Paper Mario realtime collision observer and dumper.
 
+[![Demo of framedump with UI enabled](.github/resources/demo.gif)](https://youtu.be/UWDEOoRjCwI)
+
 This consists of two parts:
 
 ## The Server
