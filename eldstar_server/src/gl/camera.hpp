@@ -23,7 +23,7 @@ class perspective_camera : public camera {
                 glm::vec3 position,
                 glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f),
                 float fov = 25.0f,
-                float close_plane = 0.1f,
+                float close_plane = 5.0f,
                 float far_plane = 10000.0f
             ) :
             camera(),
