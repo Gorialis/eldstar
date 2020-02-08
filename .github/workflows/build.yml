@@ -11,7 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v1
+        with:
+          path: eldstar_server/deps
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('eldstar_server/download_deps.ps1') }}-${{ hashFiles('eldstar_server/build_deps.ps1') }}
+
       - name: Download and build dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           cd eldstar_server
@@ -23,6 +31,7 @@ jobs:
           echo "Compressed dependencies into Eldstar_${env:GITHUB_SHA}_WinDepends.zip"
 
       - name: Upload dependency artifact
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v2-preview
         with:
           name: Eldstar_${{ github.sha }}_WinDepends
