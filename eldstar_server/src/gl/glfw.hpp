@@ -38,7 +38,7 @@ class glfw {
 
 class window {
     public:
-        window(int width, int height, const char *title, bool make_context = false, GLFWmonitor* monitor = NULL, GLFWwindow* share = NULL) : width(width), height(height) {
+        window(int width, int height, const char *title, bool make_context = false, GLFWmonitor* monitor = NULL, GLFWwindow* share = NULL) {
             ptr = glfwCreateWindow(width, height, title, monitor, share);
 
             if (ptr == NULL) {
@@ -63,22 +63,25 @@ class window {
         }
 
         int get_width() const {
+            int width, height;
+            glfwGetWindowSize(ptr, &width, &height);
             return width;
         }
 
         int get_height() const {
+            int width, height;
+            glfwGetWindowSize(ptr, &width, &height);
             return height;
         }
 
         void set_size(int width, int height) {
-            this->width = width;
-            this->height = height;
-
             glfwSetWindowSize(ptr, width, height);
             glViewport(0, 0, width, height);
         }
 
         float aspect_ratio() const {
+            int width, height;
+            glfwGetWindowSize(ptr, &width, &height);
             return static_cast<float>(width) / static_cast<float>(height);
         }
 
@@ -96,7 +99,6 @@ class window {
 
     private:
         GLFWwindow* ptr;
-        int width, height;
 };
 
 } // gl

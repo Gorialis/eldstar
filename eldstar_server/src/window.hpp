@@ -29,7 +29,7 @@ class window {
         window()
             : gl_window(1184, 800, "Eldstar", true),
               start_time(glfwGetTime()), last_time(start_time),
-              wireframe(false), mirror_game_camera(false), recording(false), recording_has_ui(false), color_mode(0)
+              wireframe(false), mirror_game_camera(false), recording(false), recording_has_ui(false), color_mode(0), show_fps(false)
         {
             // Enable depth-testing and set the blend function
             glEnable(GL_DEPTH_TEST);
@@ -49,6 +49,11 @@ class window {
             input_state = std::make_shared<input::state_manager>();
             if (!global_state_manager.lock())
                 global_state_manager = input_state;
+
+            glfwSetFramebufferSizeCallback(gl_window.get(), [](GLFWwindow* w, int width, int height){
+                glfwSetWindowSize(w, width, height);
+                glViewport(0, 0, width, height);
+            });
 
             glfwSetKeyCallback(gl_window.get(), [](GLFWwindow* w, int key, int scan_code, int action, int mods){
                 if (auto spt = global_state_manager.lock()) {
@@ -109,6 +114,7 @@ class window {
         bool mirror_game_camera;
         bool recording;
         bool recording_has_ui;
+        bool show_fps;
         int color_mode;
 
         std::unique_ptr<menu> active_menu;

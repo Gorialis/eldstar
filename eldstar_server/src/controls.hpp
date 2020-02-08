@@ -66,25 +66,34 @@ void orbiting_camera_control(eldstar::window& w, gl::perspective_camera& camera)
         camera.target += move * pixels_to_world;
     }
 
-    // Right click orbiting
-    if (w.input_state->mouse[1].action < 2) {
-        float pixels_to_radians = -glm::radians(120.0f) / static_cast<float>(w.gl_window.get_height());
-        glm::vec2 cursor = w.input_state->cursor_delta;
-        glm::vec4 orbit_delta = glm::vec4(camera.position - camera.target, 1.0f);
-        
-        float pitch = glm::atan(orbit_delta.y, glm::sqrt(glm::pow(orbit_delta.x, 2.0f) + glm::pow(orbit_delta.z, 2.0f)));
-        float pitch_delta = cursor.y * pixels_to_radians;
+    // Orbiting
+    float pixels_to_radians = -glm::radians(120.0f) / static_cast<float>(w.gl_window.get_height());
+	float keyboard_speed = (10.0f * multiplier) / pixels_to_radians;
+    glm::vec2 cursor = glm::vec2(0.0f, 0.0f);
 
-        camera.position = camera.target + glm::vec3(glm::rotate(
-            glm::abs(pitch - pitch_delta) > (glm::pi<float>() / 2.0f) ? glm::mat4(1.0f) : glm::rotate(
-                glm::mat4(1.0f),
-                cursor.y * pixels_to_radians,
-                right
-            ),
-            cursor.x * pixels_to_radians,
-            glm::vec3(0.0f, 1.0f, 0.0f)
-        ) * orbit_delta);
-    }
+    // Right click orbiting
+    if (w.input_state->mouse[1].action < 2) cursor += w.input_state->cursor_delta;
+    // Keyboard orbit support
+    if (w.input_state->keyboard[GLFW_KEY_I].action < 2) cursor.y -= keyboard_speed;
+    if (w.input_state->keyboard[GLFW_KEY_K].action < 2) cursor.y += keyboard_speed;
+    if (w.input_state->keyboard[GLFW_KEY_J].action < 2) cursor.x -= keyboard_speed;
+    if (w.input_state->keyboard[GLFW_KEY_L].action < 2) cursor.x += keyboard_speed;
+
+    glm::vec4 orbit_delta = glm::vec4(camera.position - camera.target, 1.0f);
+
+    float pitch = glm::atan(orbit_delta.y, glm::sqrt(glm::pow(orbit_delta.x, 2.0f) + glm::pow(orbit_delta.z, 2.0f)));
+    float pitch_delta = cursor.y * pixels_to_radians;
+
+    camera.position = camera.target + glm::vec3(glm::rotate(
+        glm::abs(pitch - pitch_delta) > (glm::pi<float>() / 2.0f) ? glm::mat4(1.0f) : glm::rotate(
+            glm::mat4(1.0f),
+            cursor.y * pixels_to_radians,
+            right
+        ),
+        cursor.x * pixels_to_radians,
+        glm::vec3(0.0f, 1.0f, 0.0f)
+    ) * orbit_delta);
+
 
     // Reset with Numpad 0
     if (w.input_state->keyboard[GLFW_KEY_KP_0].action == input::down) {
@@ -229,6 +238,9 @@ bool menu_control(eldstar::window& w, resource_manager& r, gl::perspective_camer
                                 }),
                             }
                         );
+                    }),
+                    menu_option("Toggle showing FPS", [&w](void* ptr) {
+                        w.show_fps = !w.show_fps;
                     }),
                     menu_option("Exit", [&w](void* ptr) { w.close(); }),
                 },

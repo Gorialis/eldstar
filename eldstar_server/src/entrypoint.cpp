@@ -171,6 +171,19 @@ int main(int argc, char** argv) {
         // Render Eldstar version
         glm::vec2 version_end = resources->opensans.render_utf8_bordered("Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b", glm::vec2(20.0f, 45.0f));
 
+        if (window->show_fps) {
+            float delta = static_cast<float>(window->delta_time);
+            if (delta != 0.0f) {
+                float fps = 1.0f / delta;
+                std::stringstream buffer;
+                buffer.precision(4);
+                buffer << "Window FPS: " << fps;
+                resources->opensans.render_utf8_bordered(buffer.str(), glm::vec2(20.0f, 70.0f));
+            }
+            else
+                resources->opensans.render_utf8_bordered("Window FPS: inf", glm::vec2(20.0f, 70.0f));
+        }
+
         if (window->recording) {
             resources->text.set(color, glm::vec3(1.0f, 0.5f, 0.5f));
             resources->opensans.render_utf8_bordered(" (recording)", version_end);
