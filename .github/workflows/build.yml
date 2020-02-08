@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Make local clone not shallow
+        shell: bash
+        run: git fetch --prune --unshallow
+
       - name: Get tag name
         id: get_head
         shell: bash
