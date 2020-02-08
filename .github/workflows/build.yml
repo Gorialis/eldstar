@@ -20,12 +20,13 @@ jobs:
           cd ..
 
           Compress-Archive -Path "eldstar_server/deps/*" -DestinationPath "Eldstar_${env:GITHUB_SHA}_WinDepends.zip"
+          echo "Compressed dependencies into Eldstar_${env:GITHUB_SHA}_WinDepends.zip"
 
       - name: Upload dependency artifact
         uses: actions/upload-artifact@v2-preview
         with:
-          name: Eldstar_${{ env.GITHUB_SHA }}_WinDepends
-          path: Eldstar_${{ env.GITHUB_SHA }}_WinDepends.zip
+          name: Eldstar_${{ github.sha }}_WinDepends
+          path: Eldstar_${{ github.sha }}_WinDepends.zip
 
       - name: Build solution
         shell: pwsh
@@ -35,12 +36,13 @@ jobs:
           cd ..
 
           Compress-Archive -Path "eldstar_server/dists/*" -DestinationPath "Eldstar_${env:GITHUB_SHA}_WinDebug.zip"
+          echo "Compressed debug files into Eldstar_${env:GITHUB_SHA}_WinDebug.zip"
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v2-preview
         with:
-          name: Eldstar_${{ env.GITHUB_SHA }}_WinDebug
-          path: Eldstar_${{ env.GITHUB_SHA }}_WinDebug.zip
+          name: Eldstar_${{ github.sha }}_WinDebug
+          path: Eldstar_${{ github.sha }}_WinDebug.zip
 
       - name: Package 32-bit distribution
         shell: pwsh
@@ -53,12 +55,13 @@ jobs:
           cd ../..
 
           Compress-Archive -Path "dists/32bit/*" -DestinationPath "Eldstar_${env:GITHUB_SHA}_Win32.zip"
+          echo "Compressed 32-bit distribution into Eldstar_${env:GITHUB_SHA}_Win32.zip"
 
       - name: Upload 32-bit release
         uses: actions/upload-artifact@v2-preview
         with:
-          name: Eldstar_${{ env.GITHUB_SHA }}_Win32
-          path: Eldstar_${{ env.GITHUB_SHA }}_Win32.zip
+          name: Eldstar_${{ github.sha }}_Win32
+          path: Eldstar_${{ github.sha }}_Win32.zip
 
       - name: Package 64-bit distribution
         shell: pwsh
@@ -71,9 +74,10 @@ jobs:
           cd ../..
 
           Compress-Archive -Path "dists/64bit/*" -DestinationPath "Eldstar_${env:GITHUB_SHA}_Win64.zip"
+          echo "Compressed 64-bit distribution into Eldstar_${env:GITHUB_SHA}_Win64.zip"
 
       - name: Upload 64-bit release
         uses: actions/upload-artifact@v2-preview
         with:
-          name: Eldstar_${{ env.GITHUB_SHA }}_Win64
-          path: Eldstar_${{ env.GITHUB_SHA }}_Win64.zip
+          name: Eldstar_${{ github.sha }}_Win64
+          path: Eldstar_${{ github.sha }}_Win64.zip
