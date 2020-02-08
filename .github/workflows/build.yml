@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      CMAKE_GENERATOR: Visual Studio 15 2017
+      CMAKE_GENERATOR: Visual Studio 16 2019
 
     steps:
       - uses: actions/checkout@v2
