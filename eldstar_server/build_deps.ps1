@@ -7,7 +7,7 @@ Set-Variable -Name "PROJECT_DIR" -Value (Get-Item -Path ".\").FullName;
 $CONFIGS = @("Debug", "Release");
 $ARCHITECTURES = @("Win32", "x64");
 
-if (${env:CMAKE_GENERATOR} -eq $null) {
+if ($null -eq ${env:CMAKE_GENERATOR}) {
     Set-Variable -Name COMPILER -Value "Visual Studio 15 2017";
 } else {
     Set-Variable -Name COMPILER -Value "${env:CMAKE_GENERATOR}";
@@ -46,7 +46,7 @@ Write-Host "[${TARGET}] Building glfw...";
 
 mkdir glfw;
 Set-Location glfw;
-cmake ../../sources/glfw/glfw-3.3 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glfw/out" -DGLFW_BUILD_EXAMPLES:BOOL="0" -DGLFW_BUILD_DOCS:BOOL="0" -DGLFW_BUILD_TESTS:BOOL="0";
+cmake ../../sources/glfw/glfw-3.3.2 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glfw/out" -DGLFW_BUILD_EXAMPLES:BOOL="0" -DGLFW_BUILD_DOCS:BOOL="0" -DGLFW_BUILD_TESTS:BOOL="0";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
@@ -69,7 +69,7 @@ if (${ARCHITECTURE} -Match "x64") {
     Set-Variable -Name FREETYPE_DIST_TYPE -Value "win32";
 }
 
-cmake ../../sources/harfbuzz/harfbuzz-2.6.1 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/harfbuzz/out" -DHB_HAVE_FREETYPE:BOOL="1" -DFREETYPE_INCLUDE_DIR_freetype2:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_INCLUDE_DIR_ft2build:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_LIBRARY_DEBUG:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DFREETYPE_LIBRARY_RELEASE:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DHB_BUILD_TESTS:BOOL="0";
+cmake ../../sources/harfbuzz/harfbuzz-2.6.4 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/harfbuzz/out" -DHB_HAVE_FREETYPE:BOOL="1" -DFREETYPE_INCLUDE_DIR_freetype2:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_INCLUDE_DIR_ft2build:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_LIBRARY_DEBUG:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DFREETYPE_LIBRARY_RELEASE:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DHB_BUILD_TESTS:BOOL="0";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 

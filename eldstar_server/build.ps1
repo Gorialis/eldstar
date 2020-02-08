@@ -4,7 +4,7 @@ Set-Variable -Name "PROJECT_DIR" -Value (Get-Item -Path ".\").FullName;
 $CONFIGS = @("Debug", "Release");
 $ARCHITECTURES = @("Win32", "x64");
 
-if (${env:CMAKE_GENERATOR} -eq $null) {
+if ($null -eq ${env:CMAKE_GENERATOR}) {
     Set-Variable -Name COMPILER -Value "Visual Studio 15 2017";
 } else {
     Set-Variable -Name COMPILER -Value "${env:CMAKE_GENERATOR}";
