@@ -54,7 +54,7 @@ Write-Host "[${TARGET}] Building glm...";
 
 mkdir glm;
 Set-Location glm;
-cmake ../../sources/glm/glm -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glm/out" -DGLM_TEST_ENABLE:BOOL="0";
+cmake ../../sources/glm/glm -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glm/out" -DGLM_QUIET:BOOL="1" -DGLM_TEST_ENABLE:BOOL="0";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
