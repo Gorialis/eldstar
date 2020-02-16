@@ -115,6 +115,9 @@ int main(int argc, char** argv) {
         resources->mesh.set(model_color, glm::vec4(1.0f));
         resources->mesh.set(color_mode, window->color_mode);
 
+        parser->patchback_deferred = camera.position;
+        parser->patchback_target = camera.target;
+
         if (world) {
             if (window->wireframe) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

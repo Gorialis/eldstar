@@ -84,6 +84,8 @@ onlyZoned = false
 local read_float = mainmemory.readfloat
 local read_u32_be = mainmemory.read_u32_be
 local read_u16_be = mainmemory.read_u16_be
+local write_float = mainmemory.writefloat
+local write_u32_be = mainmemory.write_u32_be
 
 -- functions
 function send_colliders()
@@ -253,7 +255,31 @@ while true do
 		sock_client:settimeout(nil)
 
 		framebuffer[#framebuffer + 1] = string.format("e %d %s\n", emu.framecount(), useragent)
-		sock_client:send(table.concat(framebuffer, ""))
+        sock_client:send(table.concat(framebuffer, ""))
+
+        repatch_string = sock_client:receive()
+        repatch_data = {}
+        if repatch_string ~= nil then
+            for repatch_value in string.gmatch(repatch_string, "%S+") do
+                repatch_data[#repatch_data + 1] = tonumber(repatch_value)
+            end
+
+            -- patch the camera code
+            write_u32_be(0x031E00, 0)
+            write_u32_be(0x031DC8, 0)
+            write_u32_be(0x031E0C, 0)
+            write_u32_be(0x031CD4, 0)
+            write_u32_be(0x031CF4, 0)
+            write_u32_be(0x031D14, 0)
+
+            -- update the camera
+            write_float(camera_deferred, repatch_data[2], true)
+            write_float(camera_deferred + 4, repatch_data[3], true)
+            write_float(camera_deferred + 8, repatch_data[4], true)
+            write_float(camera_deferred + 12, repatch_data[5], true)
+            write_float(camera_deferred + 16, repatch_data[6], true)
+            write_float(camera_deferred + 20, repatch_data[7], true)
+        end
 
 		sock_client:close()
 	end

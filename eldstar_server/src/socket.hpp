@@ -132,6 +132,10 @@ class tcp_client_session {
             return recv(client_socket_id, buffer, length, 0);
         }
 
+        int send(const char* buffer, int length) {
+            return ::send(client_socket_id, buffer, length, 0);
+        }
+
     private:
         SOCKET client_socket_id;
 };

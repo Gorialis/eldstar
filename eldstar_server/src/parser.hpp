@@ -13,7 +13,10 @@ namespace eldstar {
 
 class socket_parser {
     public:
-        socket_parser() : reader_thread(&socket_parser::run, this), stop_thread(false), target(std::make_shared<game::world>()) {
+        socket_parser() :
+            reader_thread(&socket_parser::run, this), stop_thread(false), target(std::make_shared<game::world>()),
+            patchback_fov(25.0f), patchback_deferred(0.0f, 0.0f, 50.0f), patchback_target(0.0f, 0.0f, 0.0f)
+        {
             // Wait until the thread has started up before exiting the constructor
             std::unique_lock<std::mutex> lock(mutex);
             startup_unlock.wait(lock);
@@ -46,6 +49,8 @@ class socket_parser {
                 char stack_buffer[8193];
                 int terminator = 8192;
 
+                received_endcode = false;
+
                 // Buffer waiting data
                 while ((terminator = client->receive(stack_buffer, 8192)) > 0) {
                     // Add to the contiguous heap buffer
@@ -57,7 +62,17 @@ class socket_parser {
                         handle_line(heap_buffer.substr(0, found));
                         heap_buffer.erase(0, found + 1);
                     }
+
+                    if (received_endcode) break;
                 }
+
+                std::stringstream patchback_stream;
+                patchback_stream << patchback_fov << ' ';
+                patchback_stream << patchback_deferred[0] << ' ' << patchback_deferred[1] << ' ' << patchback_deferred[2] << ' ';
+                patchback_stream << patchback_target[0] << ' ' << patchback_target[1] << ' ' << patchback_target[2] << std::endl;
+                std::string patchback_string = patchback_stream.str();
+
+                client->send(patchback_string.c_str(), patchback_string.size());
             }
         }
 
@@ -85,6 +100,8 @@ class socket_parser {
 
                     buffered_worlds.push_back(target);
                     target = std::make_shared<game::world>();
+
+                    received_endcode = true;
 
                     return;
                 }
@@ -195,6 +212,10 @@ class socket_parser {
             reader_thread.join();
         }
 
+        float patchback_fov;
+        glm::vec3 patchback_deferred;
+        glm::vec3 patchback_target;
+
     private:
         std::thread reader_thread;
 
@@ -205,6 +226,8 @@ class socket_parser {
 
         std::shared_ptr<game::world> target;
         std::deque<std::shared_ptr<game::world>> buffered_worlds;
+
+        bool received_endcode;
 };
 
 } // eldstar
