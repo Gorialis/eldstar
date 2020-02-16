@@ -57,12 +57,6 @@ class world {
             m.mesh.set(color_id, gl::color(1.0f, 0.0f, 0.0f, 0.4f));
             m.cylinder_perimeter.render();
 
-            // Render game camera
-            m.mesh.set(matrix_id, glm::inverse(get_camera_view_matrix()));
-            m.mesh.set(color_id, gl::color(0.4f, 0.4f, 0.4f, 1.0f));
-
-            m.camera.render();
-
             // Render dynamic objects
             for (auto& pair : dynamic_objects) {
                 auto color = gl::color(static_cast<float>(pair.first), 65.0f, 1.0f);
