@@ -1,6 +1,6 @@
 # eldstar
 
-![Eldstar from Paper Mario](eldstar_server/resources/images/icon_128.png)
+![Eldstar TAS-Safe variant](eldstar_server/resources/images/eldstar_tassafe_128.png) ![Eldstar Cheats variant](eldstar_server/resources/images/eldstar_cheats_128.png)
 
 Paper Mario realtime collision observer and dumper.
 
