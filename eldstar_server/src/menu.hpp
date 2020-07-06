@@ -109,7 +109,7 @@ struct menu {
         options[index](this);
     }
 
-    void render(float x, float y, resource_manager& r, GLint color_id) {
+    void render(float x, float y, resource_manager& r, GLint color_id, glm::vec2 scale) {
         glm::vec3 top(1.0f, 1.0f, 1.0f);
         glm::vec3 selected(0.8f, 0.8f, 1.0f);
         glm::vec3 other(0.7f, 0.7f, 0.7f);
@@ -123,13 +123,13 @@ struct menu {
             other *= defocused;
         }
 
-        float line_spacing = static_cast<float>(r.opensans.size) * 1.2f;
+        float line_spacing = static_cast<float>(r.opensans.size) * 1.2f * scale.y;
         float right = x;
         float needle = y;
 
         // Draw title
         r.text.set(color_id, top);
-        right = fmaxf(right, r.opensans.render_utf8_bordered(title, glm::vec2(x, needle)).x);
+        right = fmaxf(right, r.opensans.render_utf8_bordered(title, glm::vec2(x, needle), scale).x);
         needle -= line_spacing;
 
         // Calculate menu bounds
@@ -157,7 +157,7 @@ struct menu {
             else
                 r.text.set(color_id, other);
 
-            right = fmaxf(right, r.opensans.render_utf8_bordered(options[i].name, glm::vec2(x, needle)).x);
+            right = fmaxf(right, r.opensans.render_utf8_bordered(options[i].name, glm::vec2(x, needle), scale).x);
             needle -= line_spacing;
         }
 
@@ -166,13 +166,13 @@ struct menu {
 
         r.text.set(color_id, top);
         if (skip_first)
-            r.opensans.render_utf8_bordered(u8"\u2bc5", glm::vec2(center, top_needle));
+            r.opensans.render_utf8_bordered(u8"\u2bc5", glm::vec2(center, top_needle), scale);
         if (skip_last)
-            r.opensans.render_utf8_bordered(u8"\u2bc6", glm::vec2(center, needle));
+            r.opensans.render_utf8_bordered(u8"\u2bc6", glm::vec2(center, needle), scale);
 
         // Draw submenu if present
         if (submenu)
-            submenu->render(right + line_spacing, y, r, color_id);
+            submenu->render(right + line_spacing, y, r, color_id, scale);
     }
 };
 

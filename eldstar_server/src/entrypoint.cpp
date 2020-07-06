@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
         resources->text.set(color, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Render Eldstar version
-        glm::vec2 version_end = resources->opensans.render_utf8_bordered(eldstar_version, glm::vec2(20.0f, 45.0f));
+        glm::vec2 version_end = resources->opensans.render_utf8_bordered(eldstar_version, glm::vec2(20.0f, 45.0f) * window->content_scale, window->content_scale * 0.5f);
 
         if (window->show_fps) {
             float delta = static_cast<float>(window->delta_time);
@@ -184,39 +184,39 @@ int main(int argc, char** argv) {
                 std::stringstream buffer;
                 buffer.precision(4);
                 buffer << "Window FPS: " << fps;
-                resources->opensans.render_utf8_bordered(buffer.str(), glm::vec2(20.0f, 70.0f));
+                resources->opensans.render_utf8_bordered(buffer.str(), glm::vec2(20.0f, 70.0f) * window->content_scale, window->content_scale * 0.5f);
             }
             else
-                resources->opensans.render_utf8_bordered("Window FPS: inf", glm::vec2(20.0f, 70.0f));
+                resources->opensans.render_utf8_bordered("Window FPS: inf", glm::vec2(20.0f, 70.0f) * window->content_scale, window->content_scale * 0.5f);
         }
 
         if (window->recording) {
             resources->text.set(color, glm::vec3(1.0f, 0.5f, 0.5f));
-            resources->opensans.render_utf8_bordered(" (recording)", version_end);
+            resources->opensans.render_utf8_bordered(" (recording)", version_end, window->content_scale * 0.5f);
         }
 
         // If a status message is present, show it
         if (window->status) {
             resources->text.set(color, glm::vec3(1.0f, 1.0f, 0.2f));
-            resources->opensans.render_utf8_bordered(window->status, glm::vec2(20.0f, 20.0f));
+            resources->opensans.render_utf8_bordered(window->status, glm::vec2(20.0f, 20.0f) * window->content_scale, window->content_scale * 0.5f);
         } else {
             // Else show useragent + frame
             resources->text.set(color, glm::vec3(1.0f, 1.0f, 1.0f));
             if (world)
-                resources->opensans.render_utf8_bordered(world->description, glm::vec2(20.0f, 20.0f));
+                resources->opensans.render_utf8_bordered(world->description, glm::vec2(20.0f, 20.0f) * window->content_scale, window->content_scale * 0.5f);
             else
-                resources->opensans.render_utf8_bordered("No client connected", glm::vec2(20.0f, 20.0f));
+                resources->opensans.render_utf8_bordered("No client connected", glm::vec2(20.0f, 20.0f) * window->content_scale, window->content_scale * 0.5f);
         }
 
         resources->text.set(color, glm::vec3(1.0f, 1.0f, 1.0f));
         window->status -= window->delta_time;
 
-        float window_top = static_cast<float>(window->gl_window.get_height()) - static_cast<float>(resources->opensans.size) - 20.0f;
+        float window_top = static_cast<float>(window->gl_window.get_height()) - ((static_cast<float>(resources->opensans.size) + 40.0f) * window->content_scale.y * 0.5f);
 
         if (window->active_menu)
-            window->active_menu->render(20.0f, window_top, *resources, color);
+            window->active_menu->render(20.0f * window->content_scale.x, window_top, *resources, color, window->content_scale * 0.5f);
         else
-            resources->opensans.render_utf8_bordered("Press [M] to open the menu", glm::vec2(20.0f, window_top));
+            resources->opensans.render_utf8_bordered("Press [M] to open the menu", glm::vec2(20.0f * window->content_scale.x, window_top), window->content_scale * 0.5f);
 
         if (world && swapped && window->recording && window->recording_has_ui)
             eldstar::gl::dump_png("framedump/" + std::to_string(world->frame) + ".png", window->gl_window);

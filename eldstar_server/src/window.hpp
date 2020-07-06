@@ -13,8 +13,6 @@
 
 namespace eldstar {
 
-std::weak_ptr<input::state_manager> global_state_manager;
-
 class window {
     /**
      * This class covers all the startup mechanics of the Eldstar server window.
@@ -45,38 +43,49 @@ class window {
             // Enable anti-aliasing
             glEnable(GL_MULTISAMPLE);
 
+            // Set the user pointer of the GLFWwindow to this class
+            glfwSetWindowUserPointer(gl_window.get(), this);
+
             // Set up input handling
             input_state = std::make_shared<input::state_manager>();
-            if (!global_state_manager.lock())
-                global_state_manager = input_state;
 
+            // Set default content scale
+            glfwGetWindowContentScale(gl_window.get(), &content_scale.x, &content_scale.y);
+
+            // Set various callbacks
             glfwSetFramebufferSizeCallback(gl_window.get(), [](GLFWwindow* w, int width, int height){
                 glfwSetWindowSize(w, width, height);
                 glViewport(0, 0, width, height);
             });
 
+            glfwSetWindowContentScaleCallback(gl_window.get(), [](GLFWwindow* w, float xscale, float yscale){
+                window* wd = reinterpret_cast<window*>(glfwGetWindowUserPointer(w));
+
+                wd->content_scale = glm::vec2(xscale, yscale);
+            });
+
             glfwSetKeyCallback(gl_window.get(), [](GLFWwindow* w, int key, int scan_code, int action, int mods){
-                if (auto spt = global_state_manager.lock()) {
-                    spt->keyboard_event(key, action, mods);
-                }
+                window* wd = reinterpret_cast<window*>(glfwGetWindowUserPointer(w));
+
+                wd->input_state->keyboard_event(key, action, mods);
             });
 
             glfwSetMouseButtonCallback(gl_window.get(), [](GLFWwindow* w, int button, int action, int mods){
-                if (auto spt = global_state_manager.lock()) {
-                    spt->mouse_event(button, action, mods);
-                }
+                window* wd = reinterpret_cast<window*>(glfwGetWindowUserPointer(w));
+
+                wd->input_state->mouse_event(button, action, mods);
             });
 
             glfwSetCursorPosCallback(gl_window.get(), [](GLFWwindow* w, double x_pos, double y_pos){
-                if (auto spt = global_state_manager.lock()) {
-                    spt->cursor_position_event(x_pos, y_pos);
-                }
+                window* wd = reinterpret_cast<window*>(glfwGetWindowUserPointer(w));
+
+                wd->input_state->cursor_position_event(x_pos, y_pos);
             });
 
             glfwSetScrollCallback(gl_window.get(), [](GLFWwindow* w, double x_pos, double y_pos){
-                if (auto spt = global_state_manager.lock()) {
-                    spt->scroll_offset(x_pos, y_pos);
-                }
+                window* wd = reinterpret_cast<window*>(glfwGetWindowUserPointer(w));
+
+                wd->input_state->scroll_offset(x_pos, y_pos);
             });
         }
 
@@ -108,6 +117,8 @@ class window {
         gl::glfw glfw;
         gl::window gl_window;
         gl::glad glad;
+
+        glm::vec2 content_scale;
 
         std::shared_ptr<input::state_manager> input_state;
         bool wireframe;

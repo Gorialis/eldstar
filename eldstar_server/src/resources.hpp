@@ -13,7 +13,7 @@ class resource_manager {
     public:
         resource_manager() :
             freetype(),
-            opensans(&freetype, loaders::file("resources/fonts/OpenSans.ttf"), 20),
+            opensans(&freetype, loaders::file("resources/fonts/OpenSans.ttf"), 32),
 
             text({
                 loaders::shader(GL_VERTEX_SHADER, loaders::file("resources/shaders/text_vs.glsl")),
