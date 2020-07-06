@@ -16,12 +16,14 @@
 int main(int argc, char** argv) {
     bool dry_run = argc >= 2 && strcmp(argv[1], "dryrun") == 0;
 
+    std::string eldstar_version = "Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b";
+
     std::unique_ptr<eldstar::window> window;
     std::unique_ptr<eldstar::resource_manager> resources;
     std::unique_ptr<eldstar::socket_parser> parser;
 
     try {
-        window = std::unique_ptr<eldstar::window>(new eldstar::window());
+        window = std::unique_ptr<eldstar::window>(new eldstar::window(eldstar_version));
         resources = std::unique_ptr<eldstar::resource_manager>(new eldstar::resource_manager());
         parser = std::unique_ptr<eldstar::socket_parser>(new eldstar::socket_parser());
     } catch (eldstar::load_failure& e) {
@@ -169,7 +171,7 @@ int main(int argc, char** argv) {
         resources->text.set(color, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Render Eldstar version
-        glm::vec2 version_end = resources->opensans.render_utf8_bordered("Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b", glm::vec2(20.0f, 45.0f));
+        glm::vec2 version_end = resources->opensans.render_utf8_bordered(eldstar_version, glm::vec2(20.0f, 45.0f));
 
         if (window->show_fps) {
             float delta = static_cast<float>(window->delta_time);

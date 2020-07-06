@@ -26,8 +26,8 @@ class window {
      */
 
     public:
-        window()
-            : gl_window(1184, 800, "Eldstar", true),
+        window(std::string window_title = "Eldstar")
+            : gl_window(1184, 800, window_title.c_str(), true),
               start_time(glfwGetTime()), last_time(start_time),
               wireframe(false), mirror_game_camera(false), recording(false), recording_has_ui(false), color_mode(0), show_fps(false)
         {
