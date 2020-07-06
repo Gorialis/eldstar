@@ -50,14 +50,6 @@ cmake ../../sources/glfw/glfw-3.3.2 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_IN
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
-Write-Host "[${TARGET}] Building glm...";
-
-mkdir glm;
-Set-Location glm;
-cmake ../../sources/glm/glm -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/glm/out" -DGLM_QUIET:BOOL="1" -DGLM_TEST_ENABLE:BOOL="0";
-cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
-Set-Location ..;
-
 Write-Host "[${TARGET}] Building harfbuzz...";
 
 mkdir harfbuzz;
@@ -71,7 +63,7 @@ if (${ARCHITECTURE} -Match "x64") {
 
 Set-Variable -Name CACHED_ERROR_PREFERENCE -Value "$ErrorActionPreference"
 $ErrorActionPreference = 'continue';
-cmake ../../sources/harfbuzz/harfbuzz-2.6.4 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/harfbuzz/out" -DHB_HAVE_FREETYPE:BOOL="1" -DFREETYPE_INCLUDE_DIR_freetype2:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_INCLUDE_DIR_ft2build:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_LIBRARY_DEBUG:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DFREETYPE_LIBRARY_RELEASE:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DHB_BUILD_TESTS:BOOL="0";
+cmake ../../sources/harfbuzz/harfbuzz-2.6.8 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/harfbuzz/out" -DHB_HAVE_FREETYPE:BOOL="1" -DFREETYPE_INCLUDE_DIR_freetype2:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_INCLUDE_DIR_ft2build:PATH="${PROJECT_DIR}/deps/dists/freetype/include" -DFREETYPE_LIBRARY_DEBUG:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DFREETYPE_LIBRARY_RELEASE:FILEPATH="${PROJECT_DIR}/deps/dists/freetype/${FREETYPE_DIST_TYPE}/freetype.lib" -DHB_BUILD_TESTS:BOOL="0";
 $ErrorActionPreference = "${CACHED_ERROR_PREFERENCE}";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
@@ -80,7 +72,7 @@ Write-Host "[${TARGET}] Building freetype...";
 
 mkdir freetype;
 Set-Location freetype;
-cmake ../../sources/freetype/freetype-2.10.1 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/freetype/out" -DFT_WITH_HARFBUZZ:BOOL="1" -DHARFBUZZ_INCLUDE_DIRS:PATH="${TARGET_DIR}/harfbuzz/out/include/harfbuzz" -DHARFBUZZ_LIBRARIES:FILEPATH="${TARGET_DIR}/harfbuzz/out/lib/harfbuzz.lib" -DFT_WITH_ZLIB:BOOL="1" -DZLIB_INCLUDE_DIR:PATH="${TARGET_DIR}/zlib/out/include" -DZLIB_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstaticd.lib" -DZLIB_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstatic.lib" -DFT_WITH_PNG:BOOL="1" -DPNG_PNG_INCLUDE_DIR:PATH="${TARGET_DIR}/libpng/out/include" -DPNG_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_staticd.lib" -DPNG_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_static.lib";
+cmake ../../sources/freetype/freetype-2.10.2 -G ${COMPILER} -A ${ARCHITECTURE} -DCMAKE_INSTALL_PREFIX:PATH="${TARGET_DIR}/freetype/out" -DFT_WITH_HARFBUZZ:BOOL="1" -DHARFBUZZ_INCLUDE_DIRS:PATH="${TARGET_DIR}/harfbuzz/out/include/harfbuzz" -DHARFBUZZ_LIBRARIES:FILEPATH="${TARGET_DIR}/harfbuzz/out/lib/harfbuzz.lib" -DFT_WITH_ZLIB:BOOL="1" -DZLIB_INCLUDE_DIR:PATH="${TARGET_DIR}/zlib/out/include" -DZLIB_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstaticd.lib" -DZLIB_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/zlib/out/lib/zlibstatic.lib" -DFT_WITH_PNG:BOOL="1" -DPNG_PNG_INCLUDE_DIR:PATH="${TARGET_DIR}/libpng/out/include" -DPNG_LIBRARY_DEBUG:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_staticd.lib" -DPNG_LIBRARY_RELEASE:FILEPATH="${TARGET_DIR}/libpng/out/lib/libpng16_static.lib";
 cmake --build . --target INSTALL --config ${CONFIG} -- /nologo;
 Set-Location ..;
 
