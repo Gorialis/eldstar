@@ -102,7 +102,7 @@ class glyph {
             // Switch to rendering stroke
             binder.bind(stroke_bitmap);
 
-            FT_Stroker_Set(st, 2 * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+            FT_Stroker_Set(st, 3 * 128, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
 
             // Load the glyph fresh, in non-rendered mode
             if (code = FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT)) {
