@@ -16,7 +16,11 @@
 int main(int argc, char** argv) {
     bool dry_run = argc >= 2 && strcmp(argv[1], "dryrun") == 0;
 
-    std::string eldstar_version = "Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b";
+    #if defined(ELDSTAR_IS_TASSAFE)
+    std::string eldstar_version = "Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b [TAS Safe]";
+    #elif defined(ELDSTAR_IS_CHEATS)
+    std::string eldstar_version = "Eldstar v1.0." + std::to_string(GIT_REV_COUNT) + "b [Cheats]";
+    #endif
 
     std::unique_ptr<eldstar::window> window;
     std::unique_ptr<eldstar::resource_manager> resources;

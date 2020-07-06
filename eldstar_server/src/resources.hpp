@@ -30,10 +30,19 @@ class resource_manager {
             cylinder_pointer(loaders::file("resources/models/cylinder_pointer.stl")),
             world_object(loaders::file("resources/models/world_object.stl")),
 
-            icon_128(loaders::file("resources/images/icon_128.png")),
-            icon_48(loaders::file("resources/images/icon_48.png")),
-            icon_32(loaders::file("resources/images/icon_32.png")),
-            icon_16(loaders::file("resources/images/icon_16.png"))
+            #if defined(ELDSTAR_IS_TASSAFE)
+            icon_128(loaders::file("resources/images/eldstar_tassafe_128.png")),
+            icon_48(loaders::file("resources/images/eldstar_tassafe_48.png")),
+            icon_32(loaders::file("resources/images/eldstar_tassafe_32.png")),
+            icon_16(loaders::file("resources/images/eldstar_tassafe_16.png")),
+            #elif defined(ELDSTAR_IS_CHEATS)
+            icon_128(loaders::file("resources/images/eldstar_cheats_128.png")),
+            icon_48(loaders::file("resources/images/eldstar_cheats_48.png")),
+            icon_32(loaders::file("resources/images/eldstar_cheats_32.png")),
+            icon_16(loaders::file("resources/images/eldstar_cheats_16.png")),
+            #endif
+
+            stub(1)
         {};
 
         loaders::text_manager freetype;
@@ -52,6 +61,8 @@ class resource_manager {
         loaders::png icon_48;
         loaders::png icon_32;
         loaders::png icon_16;
+
+        int stub;
 };
 
 } // eldstar
