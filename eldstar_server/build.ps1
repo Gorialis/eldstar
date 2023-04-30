@@ -5,7 +5,7 @@ $CONFIGS = @("Debug", "Release");
 $ARCHITECTURES = @("Win32", "x64");
 
 if ($null -eq ${env:CMAKE_GENERATOR}) {
-    Set-Variable -Name COMPILER -Value "Visual Studio 16 2019";
+    Set-Variable -Name COMPILER -Value "Visual Studio 17 2022";
 } else {
     Set-Variable -Name COMPILER -Value "${env:CMAKE_GENERATOR}";
 }

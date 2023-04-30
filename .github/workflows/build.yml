@@ -6,10 +6,10 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      CMAKE_GENERATOR: Visual Studio 16 2019
+      CMAKE_GENERATOR: Visual Studio 17 2022
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Make local clone not shallow
         shell: bash
@@ -22,7 +22,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: eldstar_server/deps
           key: ${{ runner.os }}-dependencies-${{ hashFiles('eldstar_server/download_deps.ps1') }}-${{ hashFiles('eldstar_server/build_deps.ps1') }}
@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload dependency artifact
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         with:
           name: Eldstar_${{ steps.get_head.outputs.HEAD }}_WinDepends
           path: Eldstar_${{ steps.get_head.outputs.HEAD }}_WinDepends.zip
@@ -57,7 +57,7 @@ jobs:
           echo "Compressed debug files into Eldstar_${{ steps.get_head.outputs.HEAD }}_WinDebug.zip"
 
       - name: Upload debug artifact
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         with:
           name: Eldstar_${{ steps.get_head.outputs.HEAD }}_WinDebug
           path: Eldstar_${{ steps.get_head.outputs.HEAD }}_WinDebug.zip
@@ -76,7 +76,7 @@ jobs:
           echo "Compressed 32-bit distribution into Eldstar_${{ steps.get_head.outputs.HEAD }}_Win32.zip"
 
       - name: Upload 32-bit release
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         with:
           name: Eldstar_${{ steps.get_head.outputs.HEAD }}_Win32
           path: Eldstar_${{ steps.get_head.outputs.HEAD }}_Win32.zip
@@ -95,7 +95,7 @@ jobs:
           echo "Compressed 64-bit distribution into Eldstar_${{ steps.get_head.outputs.HEAD }}_Win64.zip"
 
       - name: Upload 64-bit release
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         with:
           name: Eldstar_${{ steps.get_head.outputs.HEAD }}_Win64
           path: Eldstar_${{ steps.get_head.outputs.HEAD }}_Win64.zip
@@ -127,7 +127,7 @@ jobs:
 
       - name: Upload 32-bit release asset
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -138,7 +138,7 @@ jobs:
 
       - name: Upload 64-bit release asset
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
